@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>La Bobine — Programmation 2026-2027</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rouge: #c14a3d;
+  --rouge-fonce: #9a3527;
+  --or: #d4a02c;
+  --or-clair: #e8b950;
+  --noir: #2a2424;
+  --gris: #5e5550;
+  --gris-clair: #8a807a;
+  --creme: #fdf7e6;
+  --creme-fonce: #f5ead0;
+  --blanc: #fffdf7;
+}
+
+html { background: #ebe1c8; }
+
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--noir);
+  background: var(--creme);
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.page {
+  background: var(--creme);
+  padding: 22mm 20mm;
+  min-height: 297mm;
+  page-break-after: always;
+  position: relative;
+}
+
+.page:last-child { page-break-after: auto; }
+
+/* COUVERTURE */
+.couverture {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, var(--creme) 0%, var(--creme-fonce) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.couverture::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(212, 160, 44, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(193, 74, 61, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.couv-content { position: relative; z-index: 1; width: 100%; }
+
+.couv-pretitre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.6em;
+  color: var(--gris);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.couv-titre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 88px;
+  font-weight: 900;
+  color: var(--rouge);
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  margin-bottom: 18px;
+}
+
+.couv-lieu {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  letter-spacing: 0.8em;
+  color: var(--or);
+  margin-bottom: 50px;
+  font-weight: 400;
+}
+
+.ornement {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--or) 50%, transparent);
+  margin: 30px auto;
+  position: relative;
+}
+
+.ornement::after {
+  content: '✦';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--creme);
+  padding: 0 12px;
+  color: var(--or);
+  font-size: 14px;
+}
+
+.couv-saison-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  color: var(--noir);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.couv-saison {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 32px;
+  font-style: italic;
+  color: var(--gris);
+  margin-bottom: 60px;
+  font-weight: 400;
+}
+
+.couv-citation {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--gris);
+  max-width: 380px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.couv-citation::before { content: '« '; color: var(--or); font-style: normal; }
+.couv-citation::after { content: ' »'; color: var(--or); font-style: normal; }
+
+/* HEADERS DE PAGE */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--or);
+  padding-bottom: 8px;
+  margin-bottom: 25px;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.page-header-titre {
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--rouge);
+  font-weight: 700;
+}
+
+.page-header-saison {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--gris-clair);
+  text-transform: uppercase;
+}
+
+/* EDITORIAL */
+.edito-titre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--rouge);
+  text-align: center;
+  margin: 30px 0 8px;
+  letter-spacing: 0.05em;
+}
+
+.edito-soustitre {
+  text-align: center;
+  font-style: italic;
+  color: var(--or);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.edito-texte {
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: justify;
+  hyphens: auto;
+  color: var(--noir);
+  max-width: 145mm;
+  margin: 0 auto 14px;
+}
+
+.edito-texte:first-letter {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--rouge);
+  float: left;
+  line-height: 0.85;
+  margin: 4px 8px 0 0;
+}
+
+.edito-texte.no-drop:first-letter {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  float: none;
+  line-height: inherit;
+  margin: 0;
+}
+
+.edito-signature {
+  text-align: right;
+  font-style: italic;
+  color: var(--rouge);
+  font-size: 13px;
+  margin-top: 18px;
+  max-width: 145mm;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* PROGRAMMATION */
+.section-titre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--rouge);
+  text-align: center;
+  margin: 30px 0 8px;
+  letter-spacing: 0.05em;
+}
+
+.section-soustitre {
+  text-align: center;
+  font-style: italic;
+  color: var(--or);
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.mois {
+  margin-bottom: 22px;
+  page-break-inside: avoid;
+}
+
+.mois-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px dotted var(--or);
+  padding-bottom: 6px;
+}
+
+.mois-numero {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--or);
+  line-height: 1;
+}
+
+.mois-nom {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--rouge);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mois-theme {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--noir);
+  flex: 1;
+}
+
+.mois-note {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--rouge);
+  margin: -6px 0 10px 0;
+  padding-left: 36px;
+}
+
+.film {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 9px;
+  align-items: baseline;
+}
+
+.film-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--or);
+  min-width: 24px;
+}
+
+.film-content { flex: 1; }
+
+.film-ligne {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  line-height: 1.3;
+}
+
+.film-titre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--noir);
+}
+
+.film-meta {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--gris);
+}
+
+.film-sep {
+  color: var(--or);
+  font-size: 10px;
+}
+
+.film-langue {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--rouge);
+  text-transform: uppercase;
+  background: rgba(193, 74, 61, 0.10);
+  padding: 1px 7px;
+  border-radius: 2px;
+}
+
+.film-info {
+  font-size: 11.5px;
+  color: var(--gris);
+  font-style: italic;
+  margin-top: 2px;
+  line-height: 1.45;
+}
+
+.dedicace {
+  text-align: center;
+  font-style: italic;
+  color: var(--rouge);
+  font-size: 12px;
+  margin: 12px 0 4px;
+  letter-spacing: 0.05em;
+}
+
+.dedicace::before { content: '❦  '; color: var(--or); }
+.dedicace::after { content: '  ❦'; color: var(--or); }
+
+.avant-seance {
+  background: rgba(212, 160, 44, 0.12);
+  border-left: 2px solid var(--or);
+  padding: 8px 12px;
+  margin: 6px 0 10px 36px;
+  border-radius: 0 3px 3px 0;
+}
+
+.avant-seance-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--or);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* SÉANCE SPÉCIALE */
+.speciale {
+  background: linear-gradient(180deg, rgba(193, 74, 61, 0.06), rgba(212, 160, 44, 0.08));
+  border: 1px solid var(--or);
+  padding: 25px;
+  margin-top: 25px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.speciale-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--or);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.speciale-titre-cycle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--noir);
+  margin-bottom: 18px;
+}
+
+.speciale-film {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--rouge);
+  margin-bottom: 6px;
+}
+
+.speciale-meta {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--gris);
+  margin-bottom: 14px;
+}
+
+.speciale-desc {
+  font-size: 12px;
+  color: var(--noir);
+  line-height: 1.65;
+  max-width: 130mm;
+  margin: 0 auto 12px;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.speciale-quand {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rouge);
+  margin-top: 12px;
+}
+
+/* INFOS PRATIQUES */
+.infos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.info-bloc {
+  border-left: 2px solid var(--or);
+  padding-left: 14px;
+}
+
+.info-titre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--rouge);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+
+.info-texte {
+  font-size: 12px;
+  color: var(--noir);
+  line-height: 1.6;
+}
+
+.info-liste {
+  list-style: none;
+  padding: 0;
+}
+
+.info-liste li {
+  padding: 3px 0;
+  font-size: 12px;
+  color: var(--noir);
+}
+
+.info-liste li::before {
+  content: '— ';
+  color: var(--or);
+  margin-right: 4px;
+}
+
+.recap-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 35px 0;
+  padding: 20px;
+  border-top: 1px solid var(--or);
+  border-bottom: 1px solid var(--or);
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-chiffre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 38px;
+  font-weight: 900;
+  color: var(--rouge);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gris);
+  margin-top: 4px;
+}
+
+/* PIED DE PAGE */
+.footer {
+  margin-top: 50px;
+  text-align: center;
+  font-style: italic;
+  color: var(--or);
+  font-size: 11px;
+  border-top: 1px dotted var(--or);
+  padding-top: 15px;
+}
+
+/* IMPRESSION */
+@page {
+  size: A4;
+  margin: 15mm 12mm;
+}
+
+@media print {
+  html, body {
+    background: white !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Supprimer la structure de pages fixes */
+  .page {
+    padding: 8mm 0 !important;
+    min-height: auto !important;
+    page-break-after: auto !important;
+    page-break-before: auto !important;
+    break-after: auto !important;
+    break-before: auto !important;
+  }
+  .page:last-child {
+    page-break-after: auto !important;
+  }
+
+  /* CRUCIAL : flex casse page-break dans Chrome — passer en block */
+  .mois-header {
+    display: block !important;
+  }
+  .mois-header .mois-numero {
+    display: inline !important;
+    margin-right: 8px;
+  }
+  .mois-header .mois-nom {
+    display: inline !important;
+    margin-right: 12px;
+  }
+  .mois-header .mois-theme {
+    display: inline !important;
+  }
+  .film {
+    display: block !important;
+    overflow: visible !important;
+  }
+  .film-ligne {
+    display: block !important;
+  }
+  .film-num {
+    display: inline !important;
+    float: left !important;
+    margin-right: 8px;
+  }
+
+  /* Anti-coupure : chaque film reste entier */
+  .film {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Anti-coupure : chaque mois reste groupé */
+  .mois {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Le header de mois ne reste jamais seul en bas */
+  .mois-header {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Séances spéciales et blocs info intacts */
+  .speciale, .info-bloc, .stats-container {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Titres de section ne restent pas orphelins */
+  .section-titre, .section-soustitre, .page-header {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Couverture = sa propre page */
+  .couverture {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  p { orphans: 3; widows: 3; }
+  .no-print, .print-btn { display: none !important; }
+  .film-langue { background: transparent !important; border: 1px solid var(--rouge) !important; }
+}
+
+/* BOUTON IMPRESSION */
+.print-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--rouge);
+  color: var(--creme);
+  border: none;
+  padding: 12px 22px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: all 0.2s;
+}
+
+.print-btn:hover {
+  background: var(--rouge-fonce);
+  transform: translateY(-1px);
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Imprimer</button>
+
+<!-- ============ PAGE 1 : COUVERTURE ============ -->
+<div class="page couverture">
+  <div class="couv-content">
+    <div class="couv-pretitre">Ciné-Club</div>
+    <div class="couv-titre">La Bobine</div>
+    <div class="couv-lieu">U Z E L</div>
+
+    <div class="ornement"></div>
+
+    <div class="couv-saison-label">Programmation</div>
+    <div class="couv-saison">Saison 2026 — 2027</div>
+
+    <div class="ornement"></div>
+
+    <div class="couv-citation">
+      Du patrimoine au contemporain, de la Bretagne au monde,<br>
+      vingt-sept rendez-vous pour aimer le cinéma.
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 2 : ÉDITORIAL ============ -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-titre">La Bobine · Uzel</div>
+    <div class="page-header-saison">Saison 2026—2027</div>
+  </div>
+
+  <div class="edito-titre">Éditorial</div>
+  <div class="edito-soustitre">Une saison ample, audacieuse, ancrée</div>
+
+  <p class="edito-texte">
+    Cette saison, La Bobine prend de l'altitude. Vingt-trois films en programmation régulière de septembre à juin, deux séances en plein air proposées pour l'été — sous réserve du soutien de la Mairie —, et deux cartes blanches patrimoniales en hors-saison. Du noir et blanc et de la 4K restaurée, des chefs-d'œuvre indiscutables et des découvertes audacieuses, du cinéma français et du cinéma du monde, du patrimoine et du tout récent.
+  </p>
+
+  <p class="edito-texte no-drop">
+    Chaque mois porte un thème, chaque doublé crée du dialogue. Octobre fait dialoguer Bong Joon-ho et Chabrol autour de ce qui se cache sous les apparences. Janvier confronte deux visions d'une même bataille avec Eastwood. Avril prouve que la tension cinématographique ne vieillit pas, soixante ans entre Clouzot et Chazelle. Et tout au long de l'année, la Bretagne tient une place centrale, à travers ses cinéastes, ses paysages, ses mémoires et ses combats. Plusieurs documentaires bretons inscrits au programme préfigurent un projet plus ample : un mini-festival « Bretagne sur grand écran », à construire avec la Mairie d'Uzel pour donner à voir le territoire dans toute son épaisseur cinématographique.
+  </p>
+
+  <p class="edito-texte no-drop">
+    Le cinéma en plein air est le projet fort de cette saison. Deux soirées sous les étoiles, en juillet et en août, en partenariat avec Cinétoiles — un grand écran de 9 mètres sur 7, des transats, un dispositif technique professionnel pour transformer la place du village en salle de cinéma. Ces séances ne sont pas un supplément décoratif : elles rassemblent habitants permanents et vacanciers, enfants assis sur l'herbe et anciens sur leur chaise pliante, autour d'un même écran et d'une même nuit d'été. Elles redonnent au cinéma sa dimension de fête collective et inscrivent Uzel dans la carte des communes vivantes de Bretagne. Le coût total s'élève à 2 431 € TTC pour les deux séances, droits d'auteurs et SACEM compris — un investissement modeste au regard de l'événement créé. La Bobine ne peut pas porter seule ce projet : sa réalisation dépend du soutien financier de la Mairie d'Uzel, que nous sollicitons avec conviction.
+  </p>
+
+  <p class="edito-texte no-drop">
+    Cette programmation est le résultat d'un travail de fond. Plus de quatre cents films ont été examinés, discutés, écartés ou retenus. Les droits de diffusion sont négociés par la FCCM, notre fédération des ciné-clubs. Cette saison, nous avons fait le choix de sortir du seul catalogue COFECIC pour élargir notre champ : davantage de films disponibles, davantage de découvertes possibles, mais aussi un coût supérieur — les droits passent de 75 € à 166–273 € par film selon les œuvres. Un investissement assumé, qui dit notre exigence et qui justifie le soutien que nous sollicitons.
+  </p>
+
+  <p class="edito-texte no-drop">
+    Quatre soirées-débats avec des réalisateurs invités, plusieurs séances dédiées à des figures aimées d'Uzel, un ciné-concert avec Gaspard Prénovec (à définir avec lui), un partenariat envisagé avec la Cinémathèque de Bretagne. Et le rire, surtout, qui traverse la saison — du burlesque silencieux de Keaton à l'anarchie joyeuse de Renoir, de la poésie visuelle de Tati à la satire d'Étienne Chatiliez, du conte musical de Courcol à la comédie noire de Karan Kandhari. Parce que La Bobine n'est pas seulement un lieu de projection : ce sont deux rendez-vous mensuels le dimanche, un noir qui se fait dans la salle, une lumière qui reste après. Une promesse — celle d'une vraie programmation de cinéma à Uzel.
+  </p>
+
+  <div class="edito-signature">Bonne saison à toutes et à tous.</div>
+</div>
+
+<!-- ============ PAGES PROGRAMMATION ============ -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-titre">Programmation · Septembre — Décembre</div>
+    <div class="page-header-saison">Saison 2026—2027</div>
+  </div>
+
+  <div class="section-titre">La Saison</div>
+  <div class="section-soustitre">De Septembre à Août</div>
+
+  <!-- SEPTEMBRE -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">I</div>
+      <div class="mois-nom">Septembre</div>
+      <div class="mois-theme">Grands formats · Lumière et ombres</div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">①</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Barry Lyndon</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Stanley Kubrick, 1975</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VF</span>
+        </div>
+        <div class="film-info">L'ascension et la chute d'un Irlandais sans naissance dans l'Europe du XVIIIe siècle. Trois heures de tableaux en mouvement, lumière à la bougie, perfection esthétique absolue. Kubrick filme chaque plan comme une toile de Gainsborough ou Watteau. Le manifeste d'ouverture qui annonce l'exigence de la saison.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">②</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Souvent l'hiver se mutine</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Benoit Perraud, 2025</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">À partir d'un trésor d'archives filmées rares, Benoit Perraud fait revivre la vie paysanne du Poitou au XXe siècle : gestes, luttes, chants. Une fresque sensible et politique sur une communauté dominée mais résistante, qui résonne avec la mémoire rurale bretonne. <strong>Séance en présence du réalisateur.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OCTOBRE -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">II</div>
+      <div class="mois-nom">Octobre</div>
+      <div class="mois-theme">Sous les apparences</div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">③</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Parasite</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Bong Joon-ho, 2019</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VF</span>
+        </div>
+        <div class="film-info">Une famille pauvre s'infiltre, un par un, dans la maison ultramoderne d'une famille riche. Bong Joon-ho construit une mécanique implacable qui glisse de la comédie au cauchemar. Palme d'Or 2019 et quatre Oscars dont celui du Meilleur film. Un film virtuose, à l'écriture vertigineuse. Avertissement : scène de violence dans le dernier tiers.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">④</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">La Cérémonie</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Claude Chabrol, 1995</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Une jeune bonne illettrée se lie d'amitié avec une postière révoltée dans une grande maison bretonne près de Saint-Malo. Sandrine Bonnaire et Isabelle Huppert sont saisissantes dans ce thriller social glaçant inspiré de l'affaire des sœurs Papin. Bong Joon-ho a explicitement cité ce film comme l'inspiration directe de Parasite. Tourné par Chabrol au sommet de son art.</div>
+      </div>
+    </div>
+
+    <div class="dedicace">Clin d'œil à Dominique Deveney</div>
+  </div>
+
+  <!-- NOVEMBRE -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">III</div>
+      <div class="mois-nom">Novembre</div>
+      <div class="mois-theme">La terre et les hommes</div>
+    </div>
+    
+
+    <div class="film">
+      <div class="film-num">⑤</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Petit Paysan</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Hubert Charuel, 2017</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Pierre, jeune éleveur laitier, vit pour ses vaches. Quand l'une d'elles tombe malade, il découvre une épidémie qui pourrait tout détruire. Hubert Charuel, lui-même fils d'éleveurs, signe un premier film bouleversant — thriller paysan, drame intime, portrait d'un homme qui s'enfonce. Swann Arlaud, immense, a reçu le César du Meilleur acteur.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑥</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Mémoire d'un ouragan</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Jean-Luc Chevé</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Dix ans après la tempête de 1999, témoignages de ceux qui ont tout perdu et reconstruit. Jean-Luc Chevé interroge la mémoire des éléments en Bretagne. <strong>Séance en présence du réalisateur.</strong></div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑦</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Le Cheval d'orgueil</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Claude Chabrol, 1980</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Adaptation du livre culte de Per-Jakez Hélias, récit autobiographique de l'enfance d'un fils de paysan dans le Pays Bigouden au début du XXe siècle. Chabrol filme la dignité d'un monde qui disparaît sans nostalgie ni misérabilisme. Le grand récit du peuple breton, à transmettre aux générations qui ne l'ont jamais lu.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÉCEMBRE -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">IV</div>
+      <div class="mois-nom">Décembre</div>
+      <div class="mois-theme">Trois comédies françaises pour finir l'année</div>
+    </div>
+    <div class="mois-note">Mois exceptionnel à 3 séances — pont entre les générations du rire</div>
+
+    <div class="film">
+      <div class="film-num">⑧</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Mon oncle</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Jacques Tati, 1958</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Monsieur Hulot, l'oncle joyeusement inadapté, navigue entre la maison ultramoderne de sa sœur et son vieux quartier populaire plein de vie. Tati signe une comédie visuelle d'une poésie inégalée, presque sans dialogues, où chaque gag est une peinture du monde moderne. Oscar du meilleur film étranger 1959. Goûter offert à toutes et tous.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑨</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">La Vie est un long fleuve tranquille</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Étienne Chatiliez, 1988</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">À la maternité, deux nouveau-nés ont été échangés à la suite d'une vengeance. Douze ans plus tard, on découvre la supercherie : la famille Le Quesnoy, bourgeoise et catholique pratiquante, a élevé Momo, et la famille Groseille, débrouillarde et joyeusement borderline, a élevé Bernadette. Étienne Chatiliez signe une comédie satirique culte, devenue un classique du patrimoine populaire français. César du meilleur premier film 1989.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑩</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">En fanfare</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Emmanuel Courcol, 2024</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Un grand chef d'orchestre apprend qu'il a été adopté et qu'il a un frère biologique : un modeste tromboniste d'une fanfare ouvrière du Nord. Emmanuel Courcol filme la rencontre de deux mondes avec une tendresse rare. Benjamin Lavernhe et Pierre Lottin sont magnifiques. Le film populaire et chaleureux qui réconcilie tout le monde — parfait pour finir l'année ensemble.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 : JANVIER À AVRIL -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-titre">Programmation · Janvier — Avril</div>
+    <div class="page-header-saison">Saison 2026—2027</div>
+  </div>
+
+  <!-- JANVIER -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">V</div>
+      <div class="mois-nom">Janvier</div>
+      <div class="mois-theme">La même guerre, plusieurs vérités</div>
+    </div>
+    <div class="mois-note">Diptyque Eastwood + témoignage local — événement annuel</div>
+
+    <div class="film">
+      <div class="film-num">⑪</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Mémoires de nos pères</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Clint Eastwood, 2006</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VF</span>
+        </div>
+        <div class="film-info">Février 1945. Six soldats américains plantent un drapeau au sommet du mont Suribachi à Iwo Jima. La photo devient une icône, ces hommes deviennent des héros malgré eux. Eastwood déconstruit le mythe et raconte le retour à la vie civile, la culpabilité, l'instrumentalisation. Première partie d'un diptyque unique dans l'histoire du cinéma de guerre.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑫</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Lettres d'Iwo Jima</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Clint Eastwood, 2006</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VF</span>
+        </div>
+        <div class="film-info">La même bataille, racontée depuis les tunnels souterrains de l'armée japonaise condamnée. Le général Kuribayashi écrit à sa famille, ses hommes attendent la mort. Eastwood filme l'ennemi de son premier film comme des hommes — pères, fils, époux. Œuvre d'une humanité rare, en langue japonaise. À programmer la même semaine que Mémoires de nos pères.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑬</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">La Colonne infernale</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Michel Mihami &amp; André Le Moustarder, 2023</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">6 août 1944, Plémet, à 15 km d'Uzel. Une colonne de 257 soldats de la Wehrmacht remonte vers la poche de Lorient. L'Abbé Radenac et le maire Louis Martin orchestrent leur reddition par la ruse, sans tirer un seul coup de feu. Michel Mihami a découvert cette histoire par hasard dans une exposition à la mairie de Plémet en 2014, et lui a consacré près de dix ans de travail. Long-métrage mêlant fait historique et fiction, tourné en Centre-Bretagne avec des comédiens bénévoles. <strong>Soirée-rencontre exceptionnelle avec le réalisateur.</strong></div>
+      </div>
+    </div>
+
+    <div class="dedicace">Clin d'œil au Dr Alphonse Le Filleul</div>
+  </div>
+
+  <!-- FÉVRIER -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">VI</div>
+      <div class="mois-nom">Février</div>
+      <div class="mois-theme">Voix d'ailleurs : cinéma indien</div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑭</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Sister Midnight</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Karan Kandhari, 2024</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VOSTF</span>
+        </div>
+        <div class="film-info">Mumbai, mariage arrangé. Uma rejoint son mari dans un taudis aux murs de papier. Elle ne sait ni cuisiner, ni se taire, ni jouer la bonne épouse — et ça donne lieu à des situations franchement hilarantes. Mais quelque chose en elle se réveille, plus sauvage, et la comédie glisse peu à peu vers l'étrange. Karan Kandhari signe un premier film inclassable, drôle et déstabilisant, porté par une Radhika Apte hallucinante. Quinzaine des Cinéastes à Cannes 2024. Un OVNI cinématographique.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑮</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Rapture</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Dominic Sangma, 2023</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VOSTF</span>
+        </div>
+        <div class="film-info">Dans un village des collines Garo, au nord-est de l'Inde, un enfant atteint de cécité nocturne traverse la nuit pendant que la communauté est saisie par la peur de kidnappeurs et la prophétie d'une obscurité de quatre-vingts jours. Dominic Sangma compose un film d'une beauté sidérante sur la peur de l'autre. Première à Locarno, Prix de la Diversité Culturelle aux Asia Pacific Screen Awards. Une projection rare en Centre-Bretagne.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARS -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">VII</div>
+      <div class="mois-nom">Mars</div>
+      <div class="mois-theme">Beautés sans paroles</div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑯</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Portrait de la jeune fille en feu</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Céline Sciamma, 2019</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">XVIIIe siècle, sur une île battue par les vents de la presqu'île de Quiberon. Une jeune peintre est chargée de réaliser en secret le portrait de mariage d'Héloïse, qui refuse de poser. Naît entre elles une passion d'autant plus brûlante qu'elle est interdite. Céline Sciamma signe une œuvre d'une beauté plastique inouïe, sans aucune musique extra-diégétique. Prix du scénario à Cannes 2019.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑰</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">In the Mood for Love</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Wong Kar-wai, 2000</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VOSTF</span>
+        </div>
+        <div class="film-info">Hong Kong, 1962. Monsieur Chow et Madame Chan sont voisins. Ils découvrent que leurs époux respectifs ont une liaison ensemble. Naît alors une histoire d'amour faite de regards, de couloirs étroits, de robes magnifiques et de désir retenu. Wong Kar-wai compose le plus beau film sur l'amour qui ne se dit pas. Prix d'interprétation pour Tony Leung à Cannes 2000. Très peu de dialogues, introduction assurée avant la séance.</div>
+      </div>
+    </div>
+
+    <div class="dedicace">Clin d'œil à Jean-Pierre</div>
+  </div>
+
+  <!-- AVRIL -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">VIII</div>
+      <div class="mois-nom">Avril</div>
+      <div class="mois-theme">Tension pure : 60 ans entre les deux</div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑱</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Le Salaire de la peur</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Henri-Georges Clouzot, 1953</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Quelque part en Amérique du Sud, quatre hommes acceptent une mission suicide : conduire deux camions chargés de nitroglycérine sur une route défoncée pour éteindre l'incendie d'un puits de pétrole. Clouzot signe l'un des plus grands films de suspense jamais réalisés. Yves Montand explose à l'écran. Palme d'Or à Cannes et Ours d'or à Berlin en 1953. Soixante-dix ans plus tard, on regarde toujours ce film en oubliant de respirer.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">⑲</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Whiplash</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Damien Chazelle, 2014</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VF</span>
+        </div>
+        <div class="film-info">Andrew, jeune batteur de jazz, intègre la classe d'élite d'un conservatoire new-yorkais dirigée par Fletcher, professeur tyrannique qui humilie ses élèves au nom de l'excellence. La lutte tourne à l'obsession, puis au combat. J. K. Simmons (Oscar) compose un monstre. Damien Chazelle filme la musique comme un sport de combat. 1h47 en apnée, finale légendaire. Le film après lequel les gens applaudissent dans la salle.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 : MAI À AOÛT + SÉANCE SPÉCIALE -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-titre">Programmation · Mai — Août</div>
+    <div class="page-header-saison">Saison 2026—2027</div>
+  </div>
+
+  <!-- MAI -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">IX</div>
+      <div class="mois-nom">Mai</div>
+      <div class="mois-theme">Deux adieux</div>
+    </div>
+    
+
+    <div class="film">
+      <div class="film-num">⑳</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Adieu Philippine</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Jacques Rozier, 1962</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Été 1960, à la veille du départ pour la guerre d'Algérie. Michel, jeune technicien de télévision, séduit deux amies inséparables et part avec elles en vacances en Corse. Jacques Rozier, génie discret de la Nouvelle Vague, signe un film d'une fraîcheur miraculeuse. Présenté à Cannes 1962, restauré récemment. Soirée patrimoine en partenariat avec la Cinémathèque de Bretagne.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">㉑</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Sans adieu</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Christophe Agou, 2017</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Dans le Forez, Claudette, 75 ans, et ses voisins éleveurs résistent à une société consumériste qui grignote leur monde. Tournage sur 12 ans par un photographe décédé avant la sortie de son film. Portrait bouleversant d'une humanité debout. ACID Cannes 2017.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUIN -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">X</div>
+      <div class="mois-nom">Juin</div>
+      <div class="mois-theme">Rires &amp; liberté</div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">㉒</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Boudu sauvé des eaux</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Jean Renoir, 1932</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Un libraire parisien repêche dans la Seine un clochard suicidaire, Boudu, et l'invite à vivre chez lui. Boudu accepte… et dynamite l'ordre bourgeois de la maisonnée avec une joie féroce. Michel Simon est inoubliable. Renoir signe en 1932 un manifeste libertaire et anarchiste qui n'a pas pris une ride. Quatre-vingt-quinze ans plus tard, on rit encore de la même bonne humeur destructrice.</div>
+      </div>
+    </div>
+
+    <div class="film">
+      <div class="film-num">㉓</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Ma vache et moi (Go West)</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Buster Keaton, 1925</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Muet, cartons FR</span>
+        </div>
+        <div class="film-info">Buster Keaton, vagabond solitaire, part chercher fortune dans l'Ouest américain et y rencontre… une vache, qui devient sa meilleure amie. Comédie burlesque tendre et inventive, l'un des films les plus émouvants du génie au visage impassible. Soirée ciné-concert exceptionnelle : Gaspard Prénovec accompagne en direct les images muettes (à définir avec l'artiste). Une expérience qu'on ne vit qu'une fois par an.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUILLET -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">XI</div>
+      <div class="mois-nom">Juillet</div>
+      <div class="mois-theme">Cinéma sous les étoiles</div>
+    </div>
+    <div class="mois-note">Séance unique en plein air — partenariat Cinétoiles</div>
+
+    <div class="film">
+      <div class="film-num">㉔</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Cinema Paradiso</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Giuseppe Tornatore, 1988</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">VF</span>
+        </div>
+        <div class="film-info">Sicile, après-guerre. Un petit garçon, Toto, passe ses journées dans la cabine de projection du cinéma du village, aux côtés du vieux projectionniste Alfredo. Une amitié naît, le cinéma le sauve. Tornatore signe une lettre d'amour bouleversante au septième art, à l'enfance et aux salles de village. Oscar du meilleur film étranger 1990. Bande originale d'Ennio Morricone à pleurer. Projeté en plein air à Uzel, mise en abyme parfaite : un film sur un ciné-club de village, vu par notre ciné-club de village.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AOÛT -->
+  <div class="mois">
+    <div class="mois-header">
+      <div class="mois-numero">XII</div>
+      <div class="mois-nom">Août</div>
+      <div class="mois-theme">Été breton en plein air</div>
+    </div>
+    <div class="mois-note">Séance familiale en plein air — partenariat Cinétoiles</div>
+
+    <div class="film">
+      <div class="film-num">㉕</div>
+      <div class="film-content">
+        <div class="film-ligne">
+          <span class="film-titre">Western</span>
+          <span class="film-sep">·</span>
+          <span class="film-meta">Manuel Poirier, 1997</span>
+          <span class="film-sep">·</span>
+          <span class="film-langue">Français</span>
+        </div>
+        <div class="film-info">Un Russe et un Espagnol, deux vagabonds que tout sépare, sillonnent les routes de Bretagne en quête de travail, de filles et d'amitié. Manuel Poirier signe un road movie tendre et lumineux, où la Bretagne devient un pays de rencontres. Sergi López est magnifique. Prix du Jury à Cannes 1997. Projeté en plein air, séance familiale parfaite pour clore l'été — drôle, chaleureux, profondément humaniste.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEANCE SPECIALE -->
+    <div class="speciale">
+    <div class="speciale-label">Séance spéciale hors-saison · Carte blanche</div>
+    <div class="speciale-titre-cycle">Bretagne ouvrière</div>
+    <div class="speciale-film">㉖  Les Gueules bleues de Guerlédan</div>
+    <div class="speciale-meta">Jean-Luc Chevé · Documentaire · Français</div>
+    <div class="speciale-desc">
+      À vingt kilomètres d'Uzel, le lac de Guerlédan recouvre les anciennes carrières de schiste où des centaines d'ouvriers — les « gueules bleues » — ont travaillé. Jean-Luc Chevé recueille leur mémoire et fait revivre un monde englouti. Suivi d'un échange avec le réalisateur.
+    </div>
+    <div class="speciale-quand">En présence du réalisateur Jean-Luc Chevé</div>
+  </div>
+
+<div class="speciale">
+    <div class="speciale-label">Séance spéciale hors-saison · Carte blanche</div>
+    <div class="speciale-titre-cycle">au CAC Sud 22 — Côtes-d'Armor · Premier film</div>
+    <div class="speciale-film">㉗  Souviens-toi</div>
+    <div class="speciale-meta">Anne Burlot, 2024 · Documentaire · Eskemm Films</div>
+    <div class="speciale-desc">
+      Un film sur la mémoire et la transmission, ancré dans les Côtes-d'Armor. Anne Burlot, réalisatrice rattachée à la coopérative bretonne Eskemm Films, s'intéresse particulièrement aux personnes âgées et aux récits de vie qu'elles portent. Son travail conjugue précision documentaire et délicatesse poétique. Une séance pour faire entendre les voix du territoire, en partenariat avec le CAC Sud 22.
+    </div>
+    <div class="speciale-quand">À programmer courant de l'année</div>
+  </div>
+</div>
+
+<!-- PAGE 6 : INFOS PRATIQUES & RÉCAP -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-titre">Repères &amp; Récapitulatif</div>
+    <div class="page-header-saison">Saison 2026—2027</div>
+  </div>
+
+  <div class="section-titre">La Saison en Chiffres</div>
+  <div class="section-soustitre">Une programmation ambitieuse</div>
+
+  <div class="recap-stats">
+    <div class="stat">
+      <div class="stat-chiffre">27</div>
+      <div class="stat-label">Films</div>
+    </div>
+    <div class="stat">
+      <div class="stat-chiffre">12</div>
+      <div class="stat-label">Mois de cinéma</div>
+    </div>
+    <div class="stat">
+      <div class="stat-chiffre">4</div>
+      <div class="stat-label">Soirées débats</div>
+    </div>
+    <div class="stat">
+      <div class="stat-chiffre">2</div>
+      <div class="stat-label">Plein air</div>
+    </div>
+    <div class="stat">
+      <div class="stat-chiffre">1</div>
+      <div class="stat-label">Ciné-concert</div>
+    </div>
+  </div>
+
+  <div class="infos-grid">
+    <div class="info-bloc">
+      <div class="info-titre">Soirées avec invités</div>
+      <ul class="info-liste">
+        <li>Septembre — Benoit Perraud (Souvent l'hiver se mutine)</li>
+        <li>Novembre — Jean-Luc Chevé (Mémoire d'un ouragan)</li>
+        <li>Janvier — Michel Mihami (La Colonne infernale)</li>
+        <li>Hors-saison — Jean-Luc Chevé (Les Gueules bleues de Guerlédan)</li>
+      </ul>
+    </div>
+
+    <div class="info-bloc">
+      <div class="info-titre">Séances en plein air</div>
+      <ul class="info-liste">
+        <li>Juillet — Cinema Paradiso (Tornatore)</li>
+        <li>Août — Western (Poirier), familial</li>
+      </ul>
+      <div class="info-texte" style="margin-top: 8px; font-style: italic;">Sous réserve du soutien financier de la Mairie d'Uzel. Séances en partenariat avec Cinétoiles.</div>
+    </div>
+
+    <div class="info-bloc">
+      <div class="info-titre">Versions linguistiques</div>
+      <div class="info-texte">
+        Sur 27 films, 24 sont disponibles en français ou en VF doublée. 3 films sont projetés en VOSTF :
+        Sister Midnight, Rapture et In the Mood for Love.
+      </div>
+    </div>
+
+    <div class="info-bloc">
+      <div class="info-titre">Partenariats envisagés</div>
+      <ul class="info-liste">
+        <li>Cinémathèque de Bretagne</li>
+        <li>CAC Sud 22</li>
+        <li>Mairie d'Uzel</li>
+        <li>Cinétoiles (séances en plein air)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 35px; padding: 25px; background: rgba(212, 160, 44, 0.10); border-radius: 4px; text-align: center;">
+    <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 700; color: var(--rouge); margin-bottom: 12px; letter-spacing: 0.05em;">
+      L'identité de la saison
+    </div>
+    <div style="font-style: italic; color: var(--noir); font-size: 13px; line-height: 1.7; max-width: 130mm; margin: 0 auto;">
+      Patrimoine et contemporain, France et monde, classique et découverte, ancrage territorial et ouverture internationale. Une saison qui refuse les facilités, qui programme avec exigence, qui croit en l'intelligence du public rural. Une Bobine qui se fait remarquer.
+    </div>
+  </div>
+
+  <div class="footer">
+    Ciné-Club La Bobine · Uzel · Saison 2026—2027
+  </div>
+</div>
+
+</body>
+</html>
